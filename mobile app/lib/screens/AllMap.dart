@@ -6,7 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-const String googleApiKey = 'AIzaSyArDKkHbbMghmnCkdPwFNh8mx_Q9w4c370';
+const String googleApiKey = '';
 
 class AllMap extends StatefulWidget {
   const AllMap({Key? key}) : super(key: key);
@@ -31,7 +31,8 @@ class _MapWidgetState extends State<AllMap> {
 
   void _getCurrentLocation() async {
     LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.whileInUse || permission == LocationPermission.always) {
+    if (permission == LocationPermission.whileInUse ||
+        permission == LocationPermission.always) {
       Position position = await Geolocator.getCurrentPosition();
       setState(() {
         currentLocation = position;
@@ -42,11 +43,15 @@ class _MapWidgetState extends State<AllMap> {
   }
 
   void _fetchUsersLocations() {
-    FirebaseFirestore.instance.collection('locations').snapshots().listen((snapshot) {
+    FirebaseFirestore.instance
+        .collection('locations')
+        .snapshots()
+        .listen((snapshot) {
       snapshot.docChanges.forEach((change) {
         final DocumentSnapshot document = change.doc;
         final String userId = document.id;
-        final Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+        final Map<String, dynamic> data =
+            document.data() as Map<String, dynamic>;
 
         if (data.containsKey('latitude') && data.containsKey('longitude')) {
           final double latitude = data['latitude'] as double;
@@ -54,9 +59,14 @@ class _MapWidgetState extends State<AllMap> {
 
           // Get the username from the "users" collection
           String username = 'User'; // Default username if not found
-          FirebaseFirestore.instance.collection('users').doc(userId).get().then((userSnapshot) {
+          FirebaseFirestore.instance
+              .collection('users')
+              .doc(userId)
+              .get()
+              .then((userSnapshot) {
             if (userSnapshot.exists) {
-              Map<String, dynamic> userData = userSnapshot.data() as Map<String, dynamic>;
+              Map<String, dynamic> userData =
+                  userSnapshot.data() as Map<String, dynamic>;
               if (userData.containsKey('username')) {
                 username = userData['username'] as String;
               }
