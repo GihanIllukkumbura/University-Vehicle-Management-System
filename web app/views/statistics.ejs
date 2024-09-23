@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Statistics</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/table.css"> <!-- Assuming this is your custom CSS for tables -->
+  <link rel="stylesheet" href="../assets_DB/bootstrap/css/bootstrap.min.css">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap" rel="stylesheet">
+
+  <!-- DataTables CSS -->
+  <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="../js/jquery.min.js"></script>
+  <script src="../js/jquery.dataTables.min.js"></script>
+  <script src="../js/dataTables.bootstrap4.min.js"></script>
+</head>
+
+<body>
+
+  <div id="wrapper">
+    <!-- Sidebar -->
+    <nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark">
+      <div class="container-fluid d-flex flex-column p-0">
+        <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+          <div class="sidebar-brand-icon">
+            <img src="/upload/Side_Bar_Logo.png" alt="Sidebar Icon" width="30px" height="30px">
+          </div>
+          <div class="sidebar-brand-text mx-3"><span>WUSL</span></div>
+        </a>
+        <hr class="sidebar-divider my-0 fixed-top">
+        <ul class="navbar-nav text-light" id="accordionSidebar">
+          <li class="nav-item"><a class="nav-link" href="/"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+          <li class="nav-item"><a class="nav-link" href="/vehicles"><i class="fas fa-car"></i><span>Vehicles</span></a></li>
+          <li class="nav-item"><a class="nav-link" href="/drivers"><i class="fas fa-user"></i><span>Drivers</span></a></li>
+          <li class="nav-item"><a class="nav-link" href="/adminTrips"><i class="fas fa-user"></i><span>Assign Trips</span></a></li>
+          <li class="nav-item"><a class="nav-link" href="/locations"><i class="fas fa-map"></i><span>Map</span></a></li>
+          <li class="nav-item active"><a class="nav-link" href="/statistics"><i class="far fa-chart-bar"></i><span>Statistics</span></a></li>
+          <li class="nav-item"><a class="nav-link" href='/login'><i class="far fa-user-circle"></i><span>Logout</span></a></li>
+        </ul>
+      </div>
+    </nav>
+    <!-- End of Sidebar -->
+
+    <!-- Main Content -->
+    <div class="d-flex flex-column" id="content-wrapper">
+      <div id="content">
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand bg-white shadow mb-4 topbar static-top navbar-light">
+          <div class="container-fluid">
+            <button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
+          </div>
+        </nav>
+        <!-- End of Topbar -->
+
+        <!-- Page Content -->
+        <div class="container-fluid">
+          <div class="d-sm-flex justify-content-between align-items-center mb-3">
+            <h1 class="h3 mb-0 text-gray-800">Statistics</h1>
+          </div>
+
+       <!-- Filter Section -->
+<!-- Filter Section -->
+<div class="row mb-4">
+  <div class="col-md-6">
+    <label for="driverFilter" class="form-label">Driver:</label>
+    <select id="driverFilter" class="form-select">
+      <option value="">All Drivers</option>
+    </select>
+  </div>
+  <div class="col-md-6">
+    <label for="vehicleFilter" class="form-label">Vehicle:</label>
+    <select id="vehicleFilter" class="form-select">
+      <option value="">All Vehicles</option>
+    </select>
+  </div>
+</div>
+
+
+
+          <!-- Table Section -->
+          <div class="table-responsive">
+            <table class="table" id="refillingTable">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Amount (L)</th>
+                  <th>Cost (RS)</th>
+                  <th>Driver</th>
+                  <th>Vehicle</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (refillingDetails.length > 0) { %>
+                  <% refillingDetails.forEach(detail => { %>
+                    <tr>
+                      <td><%= new Date(detail.date.toMillis()).toLocaleDateString() %></td>
+                      <td><%= detail.liters %></td>
+                      <td><%= detail.totalCost %></td>
+                      <td><%= detail.username %></td>
+                      <td><%= detail.registeredNumber %></td>
+                    </tr>
+                  <% }); %>
+                <% } else { %>
+                  <tr>
+                    <td colspan="5">No data available</td>
+                  </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+          <!-- End of Table Section -->
+
+        </div>
+        <!-- End of Page Content -->
+
+        <!-- Footer -->
+        <footer class="bg-white sticky-footer">
+          <div class="container my-auto">
+            <div class="text-center my-auto">
+              <span>All Rights Reserved © Transportation Department WUSL</span>
+            </div>
+          </div>
+        </footer>
+        <!-- End of Footer -->
+      </div>
+    </div>
+    <!-- End of Main Content -->
+  </div>
+
+  <!-- JavaScript for DataTables -->
+  <script src="https://cdn.jsdelivr.net/npm/datatables.net@1.11.5/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/datatables.net-bs5@1.11.5/js/dataTables.bootstrap5.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      var table = $('#refillingTable').DataTable({
+        "pageLength": 5,
+        "lengthMenu": [5, 10, 20, 50, 100, "All"],
+        "language": {
+          "info": "Showing _START_ to _END_ of _TOTAL_ entries"
+        }
+      });
+  
+      // Function to populate dropdown with unique values
+      function populateDropdown(columnIndex, dropdownId) {
+        var uniqueValues = [];
+        table.column(columnIndex).data().unique().sort().each(function (value) {
+          if (value && !uniqueValues.includes(value)) {
+            uniqueValues.push(value);
+          }
+        });
+  
+        var dropdown = $(dropdownId);
+        uniqueValues.forEach(function (value) {
+          dropdown.append('<option value="' + value + '">' + value + '</option>');
+        });
+      }
+  
+      // Populate dropdowns
+      populateDropdown(3, '#driverFilter'); // Column index for Driver Username
+      populateDropdown(4, '#vehicleFilter'); // Column index for Vehicle Registered Number
+  
+      // Filter by Driver Username
+      $('#driverFilter').on('change', function() {
+        var driverValue = this.value;
+        table.column(3).search(driverValue).draw();
+      });
+  
+      // Filter by Vehicle Model
+      $('#vehicleFilter').on('change', function() {
+        var vehicleValue = this.value;
+        table.column(4).search(vehicleValue).draw();
+      });
+    });
+  </script>
+
+</body>
+
+</html>

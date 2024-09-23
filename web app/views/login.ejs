@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+ <link rel="stylesheet" href="/style.css">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Login</title>
+  <link rel="icon" href="/upload/Title_Logo.png" type="image/png">
+</head>
+
+<body>
+  <div class="login-container">
+    <img class="logoImg" src="/upload/PNG.png" alt="Logo">
+    <h1>Welcome to the Transportation Department</h1>
+    <h3>Wayamba University of Sri Lanka</h3>
+    <form class="login" action='/login' method="POST">
+  <h2>Login</h2>
+  <% if (typeof error !== 'undefined' && error !== null) { %>
+    <p><%= error %></p>
+  <% } %>
+
+ 
+  
+      <input type="email" id="email" name="email" placeholder="Email" required>
+      <input type="password" id="password" name="password" placeholder="Password" required>
+      <input  type="submit" value="Login" class ="button">
+  
+
+    <p>Do not have an account?<a href='/register'> Sign up</a></p>
+
+
+  </form>
+</div>
+</body>
+
+</html>

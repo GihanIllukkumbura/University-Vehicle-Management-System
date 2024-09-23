@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Dashboard</title>
+    <link rel="icon" href="/upload/Title_Logo.png" type="image/png">
+
+
+    <link rel="stylesheet" href="../assets_DB/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
+    <link rel="stylesheet" href="../assets_DB/fonts/fontawesome-all.min.css">
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/jquery.dataTables.min.js"></script>
+    <script src="../js/dataTables.bootstrap4.min.js"></script>
+
+
+
+
+
+</head>
+
+
+
+<body id="page-top">
+    <% if (empData.length> 0) { %>
+        <div id="wrapper">
+            <nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark ">
+                <div class="container-fluid d-flex flex-column p-0"><a
+                        class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0"
+                        href="#">
+                        <div class="sidebar-brand-icon">
+                            <img src="/upload/Side_Bar_Logo.png" alt="Sidebar Icon" width="30px" height="30px">
+                        </div>
+
+                        <div class="sidebar-brand-text mx-3"><span>WUSL</span></div>
+                    </a>
+                    <hr class="sidebar-divider my-0 fixed-top">
+                    <ul class="navbar-nav text-light" id="accordionSidebar">
+                        <li class="nav-item"><a class="nav-link active" href="/"><i
+                                    class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                        <li class="nav-item"><a class="nav-link" href='/vehicles'><i
+                                    class="fas fa-car"></i><span>Vehicles</span></a></li>
+                        <li class="nav-item"><a class="nav-link" href='/Drivers'><i
+                                    class="fas fa-user"></i><span>Drivers</span></a></li>
+                        <li class="nav-item"><a class="nav-link" href='/adminTrips'><i class="fas fa-user"></i><span>
+                                    Assign Trips</span></a></li>
+                        <li class="nav-item"><a class="nav-link" href='/locations'><i class="fas fa-map"></i><span>
+                                    Map</span></a></li>
+                        <li class="nav-item"><a class="nav-link" href='/statistics'><i class="far fa-chart-bar"
+                                    aria-hidden="true"></i><span>Statistics</span></a></li>
+                        <li class="nav-item"><a class="nav-link" href='/login'><i
+                                    class="far fa-user-circle"></i><span>Logout</span></a></li>
+
+
+
+                    </ul>
+
+                </div>
+            </nav>
+            <div class="d-flex flex-column" id="content-wrapper">
+                <div id="content">
+                    <nav class="navbar navbar-expand bg-white shadow mb-4 topbar static-top navbar-light">
+                        <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3"
+                                id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
+                    </nav>
+
+
+
+
+                    <div class="container-fluid">
+                        <div class="d-sm-flex justify-content-between align-items-center mb-4">
+                            <h3 class="text-dark mb-0">Dashboard</h3>
+                            <!-- <a id="generateReportBtn"
+                                class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#"><i
+                                    class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generate Report</a> -->
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-xl-3 mb-4">
+                                <div class="card shadow border-start-success py-2">
+                                    <div class="card-body">
+                                        <div class="row align-items-center no-gutters">
+                                            <div class="col me-2">
+                                                <div class="text-uppercase text-success fw-bold text-xs mb-1">
+                                                    <span>total Drivers</span>
+                                                </div>
+                                                <div class="text-dark fw-bold h5 mb-0"><span>
+                                                        <%= roleCounts.user + roleCounts.company %>
+                                                    </span></div>
+                                            </div>
+                                            <div class="col-auto"><i class="fas fa-user-tie fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xl-3 mb-4">
+                                <div class="card shadow border-start-success py-2">
+                                    <div class="card-body">
+                                        <div class="row align-items-center no-gutters">
+                                            <div class="col me-2">
+                                                <div class="text-uppercase text-success fw-bold text-xs mb-1">
+                                                    <span>total Trips</span>
+                                                </div>
+                                                <div class="text-dark fw-bold h5 mb-0"><span>
+                                                        <%= tripsCount %>
+                                                    </span></div>
+                                            </div>
+                                            <div class="col-auto"><i
+                                                    class="fas fa-clipboard-list fa-2x text-gray-300"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xl-3 mb-4">
+                                <div class="card shadow border-start-info py-2">
+                                    <div class="card-body">
+                                        <div class="row align-items-center no-gutters">
+                                            <div class="col me-2">
+                                                <div class="text-uppercase text-info fw-bold text-xs mb-1"><span>Total
+                                                        vehicles</span></div>
+                                                <div class="row g-0 align-items-center">
+                                                    <div class="col-auto">
+                                                        <div class="text-dark fw-bold h5 mb-0 me-3"><span>
+                                                                <%= vehicleCount %>
+                                                            </span></div>
+                                                    </div>
+                                                    <div class="col">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto"><i class="fas fa-bus fa-2x text-gray-300"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xl-3 mb-4"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-7 col-xl-8">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h6 class="text-primary fw-bold m-0">Total Trips</h6>
+                                        <div class="dropdown no-arrow"><button
+                                                class="btn btn-link btn-sm dropdown-toggle" aria-expanded="false"
+                                                data-bs-toggle="dropdown" type="button"><i
+                                                    class="fas fa-ellipsis-v text-gray-400"></i></button>
+                                            <div class="dropdown-menu shadow dropdown-menu-end animated--fade-in">
+                                                <p class="text-center dropdown-header">dropdown header:</p><a
+                                                    class="dropdown-item" href="#">&nbsp;Action</a><a
+                                                    class="dropdown-item" href="#">&nbsp;Another action</a>
+                                                <div class="dropdown-divider"></div><a class="dropdown-item"
+                                                    href="#">&nbsp;Something else here</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="card-body">
+                                        <div class="chart-area">
+                                            <canvas id="monthlyChart"
+                                                data-bss-chart='{
+                                                    "type": "bar",
+                                                    "data": {
+                                                        "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                                                        "datasets": [{
+                                                            "label": "Trips",
+                                                            "data": [<%= countsByMonth.January || 0 %>, <%= countsByMonth.February || 0 %>, <%= countsByMonth.March || 0 %>, <%= countsByMonth.April || 0 %>, <%= countsByMonth.May || 0 %>, <%= countsByMonth.June || 0 %>, <%= countsByMonth.July || 0 %>, <%= countsByMonth.August || 0 %>, <%= countsByMonth.September || 0 %>, <%= countsByMonth.October || 0 %>, <%= countsByMonth.November || 0 %>, <%= countsByMonth.December || 0 %>],
+                                                            "backgroundColor": "rgba(78, 115, 223, 0.9)",
+                                                            "borderColor": "rgba(78, 115, 223, 1)",
+                                                            "borderWidth": 1
+                                                        }]
+                                                    },
+                                                    "options": {
+                                                        "maintainAspectRatio": false,
+                                                        "legend": {
+                                                            "display": false
+                                                        },
+                                                        "title": {
+                                                            "display": true,
+                                                            "text": "Total Trips",
+                                                            "position": "top",
+                                                            "fontSize": 18,
+                                                            "fontColor": "#333",
+                                                            "fontStyle": "bold"
+                                                        },
+                                                        "scales": {
+                                                            "xAxes": [{
+                                                                "gridLines": {
+                                                                    "color": "rgb(234, 236, 244)",
+                                                                    "zeroLineColor": "rgb(234, 236, 244)",
+                                                                    "drawBorder": false,
+                                                                    "drawTicks": false,
+                                                                    "borderDash": [2],
+                                                                    "zeroLineBorderDash": [2],
+                                                                    "drawOnChartArea": false
+                                                                },
+                                                                "scaleLabel": {
+                                                                    "display": true,
+                                                                    "labelString": "Months",
+                                                                    "fontColor": "#858796",
+                                                                    "fontStyle": "bold"
+                                                                },
+                                                                "ticks": {
+                                                                    "fontColor": "#858796",
+                                                                    "fontStyle": "normal",
+                                                                    "padding": 20
+                                                                }
+                                                            }],
+                                                            "yAxes": [{
+                                                                "ticks": {
+                                                                    "stepSize": 4,
+                                                                    "beginAtZero": true
+                                                                },
+                                                                "scaleLabel": {
+                                                                    "display": true,
+                                                                    "labelString": "Count",
+                                                                    "fontColor": "#858796",
+                                                                    "fontStyle": "bold"
+                                                                }
+                                                            }]
+                                                        }
+                                                    }
+                                                }'>
+                                            </canvas>
+                                        </div>
+                                    </div>
+                                    
+
+                                </div>
+                            </div>
+                            <div class="col-lg-5 col-xl-4">
+                                <!-- <div class="card shadow mb-4">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h6 class="text-primary fw-bold m-0">All the Users</h6>
+                                        <div class="dropdown no-arrow"><button
+                                                class="btn btn-link btn-sm dropdown-toggle" aria-expanded="false"
+                                                data-bs-toggle="dropdown" type="button"><i
+                                                    class="fas fa-ellipsis-v text-gray-400"></i></button>
+                                            <div class="dropdown-menu shadow dropdown-menu-end animated--fade-in">
+                                                <p class="text-center dropdown-header">dropdown header:</p><a
+                                                    class="dropdown-item" href="#">&nbsp;Action</a><a
+                                                    class="dropdown-item" href="#">&nbsp;Another action</a>
+                                                <div class="dropdown-divider"></div><a class="dropdown-item"
+                                                    href="#">&nbsp;Something else here</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="card-body">
+                                        <div class="chart-area"><canvas
+                                                data-bss-chart="{&quot;type&quot;:&quot;doughnut&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Drivers&quot;,&quot;Admins&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;&quot;,&quot;backgroundColor&quot;:[&quot;#4e73df&quot;,&quot;#1cc88a&quot;,&quot;#36b9cc&quot;],&quot;borderColor&quot;:[&quot;#ffffff&quot;,&quot;#ffffff&quot;,&quot;#ffffff&quot;],&quot;data&quot;:[&quot;<%= roleCounts.user%>&quot;,&quot;<%= roleCounts.admin %>&quot;]}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false,&quot;labels&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}},&quot;title&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}}}"></canvas>
+                                        </div>
+                                        <div class="text-center small mt-4"><span class="me-2"><i
+                                                    class="fas fa-circle text-primary"></i>Drivers</span><span
+                                                class="me-2"><i class="fas fa-circle text-info"></i>Admins</span></div>
+                                    </div> -->
+                                </div> 
+                            </div>
+                        </div>
+                        <!-- <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="card text-white bg-primary shadow">
+                                            <div class="card-body">
+                                                <p class="m-0">Users</p>
+                                                <p class="text-white-50 small m-0">
+                                                    <%= roleCounts.user %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="card text-white bg-success shadow">
+                                            <div class="card-body">
+                                                <p class="m-0">Vehicals</p>
+                                                <p class="text-white-50 small m-0">
+                                                    <%= vehicleCount %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="card text-white bg-danger shadow"></div>
+                                    </div>
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="card text-white bg-secondary shadow"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="container-fluid">
+                        <h3 class="text-dark mb-4">Users</h3>
+                        <div class="card shadow">
+                            <div class="card-header py-3">
+                                <p class="text-primary m-0 fw-bold">Users Info</p>
+                            </div>
+
+                        </div>
+                        <div class="table-responsive table mt-2" id="dataTable-1" role="grid"
+                            aria-describedby="dataTable_info" style="padding-left: 20px;">
+                            <table class="table my-0" id="dataTable">
+                                <thead>
+                                    <tr>
+
+                                        <th>Email</th>
+                                        <th>Role</th>
+
+                                        <th>Operations</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% empData.forEach(data=> { %>
+                                        <tr role="row" class="even">
+
+                                            <td>
+                                                <%= data.email %>
+                                            </td>
+                                            <td>
+                                                <%= data.role %>
+                                            </td>
+
+
+
+                                            <td>
+                                                <div class="btn-group" role="group" aria-label="Operations">
+                                                    <!-- <a class="btn btn-primary" href="/adminedit/<%= data._id %>"
+                                                        style="margin-right: 10px;">Edit</a> -->
+
+                                                    <form style="display: inline;"
+                                                        action="/del/<%= data._id %>?_method=DELETE" method="POST"
+                                                        class="delete-form">
+                                                        <button style="cursor: pointer;" type="submit"
+                                                            class="btn btn-danger ml-2">Delete</button>
+                                                    </form>
+                                                </div>
+                                            </td>
+
+                                        </tr>
+                                        <% }); %>
+                                </tbody>
+
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <footer class="bg-white sticky-footer">
+            <div class="container my-auto">
+                <div class="text-center my-auto copyright"><span>All Rights Reserved © Transportation Department
+                        WUSL</span></div>
+            </div>
+        </footer>
+
+        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+        </div>
+        <% } else { %>
+            <p>No data found for this patient.</p>
+            <% } %>
+                <script src="../assets_DB/bootstrap/js/bootstrap.min.js"></script>
+                <script src="../assets_DB/js/chart.min.js"></script>
+                <script src="../assets_DB/js/bs-init.js"></script>
+                <script src="../assets_DB/js/theme.js"></script>
+
+
+                <script>
+
+
+                    $(document).ready(function () {
+                        $('#dataTable').DataTable({
+                            pageLength: 5,
+                            lengthMenu: [[5, 10, 20, -1], [5, 10, 20, 'Todos']],
+                            "paging": true,
+                            "ordering": true,
+                            "searching": true,
+                            "info": true,
+
+                        });
+                    });
+
+                </script>
+
+
+
+
+                <script>
+                    // Get the "Generate Report" button element
+                    const generateReportBtn = document.getElementById('generateReportBtn');
+
+                    // Add a click event listener to the button
+                    generateReportBtn.addEventListener('click', function () {
+                        // Print the current page
+                        window.print();
+                    });
+                </script>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        var deleteForms = document.querySelectorAll(".delete-form");
+                        deleteForms.forEach(function (form) {
+                            form.addEventListener("submit", function (event) {
+                                var confirmDelete = confirm(
+                                    "Are you sure you want to remove this vehicle?"
+                                );
+                                if (!confirmDelete) {
+                                    event.preventDefault();
+                                }
+                            });
+                        });
+                    });
+                </script>
+
+</body>
+
+
+</html>

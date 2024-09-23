@@ -1,0 +1,145 @@
+<!-- your_view.ejs -->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="/table.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../assets_DB/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
+  <link rel="stylesheet" href="../assets_DB/fonts/fontawesome-all.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+  <script src="../js/jquery.min.js"></script>
+  <script src="../js/jquery.dataTables.min.js"></script>
+  <script src="../js/dataTables.bootstrap4.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
+  <title>Drivers</title>
+  <link rel="icon" href="/upload/Title_Logo.png" type="image/png">
+
+  <style>
+    .dataTables_filter {
+      margin-bottom: 20px;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <div id="wrapper">
+    <nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark ">
+      <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+          <div class="sidebar-brand-icon">
+            <img src="/upload/Side_Bar_Logo.png" alt="Sidebar Icon" width="30px" height="30px">
+          </div>
+
+          <div class="sidebar-brand-text mx-3"><span>WUSL</span></div>
+        </a>
+        <hr class="sidebar-divider my-0 fixed-top">
+        <ul class="navbar-nav text-light" id="accordionSidebar">
+          <li class="nav-item"><a class="nav-link" href="/"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+          <li class="nav-item"><a class="nav-link" href='/vehicles'><i class="fas fa-car"></i><span>Vehicles</span></a></li>
+          <li class="nav-item"><a class="nav-link active" href='/Drivers'><i class="fas fa-user"></i><span> Drivers</span></a></li>
+          <li class="nav-item"><a class="nav-link" href='/adminTrips'><i class="fas fa-user"></i><span> Assign Trips</span></a></li>
+          <li class="nav-item"><a class="nav-link" href='/locations'><i class="fas fa-map"></i><span>Map</span></a></li>
+          <li class="nav-item"><a class="nav-link" href='/statistics'><i class="far fa-chart-bar" aria-hidden="true"></i><span>Statistics</span></a></li>
+          <li class="nav-item"><a class="nav-link" href='/login'><i class="far fa-user-circle"></i><span>Logout</span></a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="d-flex flex-column" id="content-wrapper">
+      <div id="content">
+        <nav class="navbar navbar-expand bg-white shadow mb-4 topbar static-top navbar-light">
+          <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
+        </nav>
+        <div class="container-fluid">
+          <div class="d-sm-flex justify-content-between align-items-center mb-3">
+            <h3 class="text-dark "><strong> Drivers </strong></h3><a id="generateReportBtn" class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="/adduser"><i class="fa fa-plus-circle fa-sm text-white-50"></i>&nbsp;Add New Driver</a>
+          </div>
+
+          <div class="row mr-2" style="display:flex; height: 510px;">
+            <% if (drivers.length> 0) { %>
+              <div class="table-responsive table" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
+                <table class="table" id="dataTable">
+                  <thead>
+                    <tr>
+                      <th>Driver Image</th>
+                      <th>User Name</th>
+                      <th>Email</th>
+                      <th>NIC No</th>
+                      <th>License No</th>
+                      <th>University ID</th>
+                      <th>Operations</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% drivers.forEach(data=> { %>
+                      <tr role="row" class="even">
+                        <td>
+                          <img src="<%= data.image_url %>" alt="Driver Image" style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;">
+                        </td>
+                        <td><%= data.username %></td>
+                        <td><%= data.email %></td>
+                        <td><%= data.nic_number %></td>
+                        <td><%= data.license_id %></td>
+                        <td><%= data.university_id %></td>
+                        <td>
+                          <div class="d-flex align-items-center">
+                            <a class="btn btn-primary me-2" href="/map/<%= data.id %>">Location</a>
+                            <a class="btn btn-success text-white me-2"
+                              href='/Driver/<%= data.id %>/refillingDetails'>Details</a>
+                            <form style="display: inline;" action="/del/<%= data.id %>?_method=DELETE"
+                              method="POST" class="delete-form">
+                              <button style="cursor: pointer;" type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                          </div>
+                        </td>
+                      </tr>
+                    <% }); %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <% } else { %>
+            <p>No data found for this drivers.</p>
+          <% } %>
+
+          <footer class="bg-white sticky-footer">
+            <div class="container my-auto">
+              <div class="text-center my-auto copyright"><span>All Rights Reserved © Transportation Department WUSL</span></div>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var deleteForms = document.querySelectorAll(".delete-form");
+      deleteForms.forEach(function (form) {
+        form.addEventListener("submit", function (event) {
+          var confirmDelete = confirm("Are you sure you want to delete this driver?");
+          if (!confirmDelete) {
+            event.preventDefault();
+          }
+        });
+      });
+    });
+  </script>
+  <script>
+    $(document).ready(function() {
+        $('#dataTable').DataTable({
+            "paging": true,
+            "searching": true,
+            "ordering": true,
+            "info": true
+        });
+    });
+  </script>
+</body>
+
+</html>

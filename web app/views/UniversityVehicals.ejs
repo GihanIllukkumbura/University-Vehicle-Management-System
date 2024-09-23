@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="/table.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../assets_DB/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
+  <link rel="stylesheet" href="../assets_DB/fonts/fontawesome-all.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+  <script src="../js/jquery.min.js"></script>
+  <script src="../js/jquery.dataTables.min.js"></script>
+  <script src="../js/dataTables.bootstrap4.min.js"></script>
+  <script type="text/javascript" charset="utf8"
+    src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
+  <title>Vehicles</title>
+  <link rel="icon" href="/upload/Title_Logo.png" type="image/png">
+
+  <style>
+    .dataTables_filter {
+      margin-bottom: 20px;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <div id="wrapper">
+    <nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark">
+      <div class="container-fluid d-flex flex-column p-0">
+        <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+          <div class="sidebar-brand-icon">
+            <img src="/upload/Side_Bar_Logo.png" alt="Sidebar Icon" width="30px" height="30px">
+          </div>
+          <div class="sidebar-brand-text mx-3"><span>WUSL</span></div>
+        </a>
+        <hr class="sidebar-divider my-0 fixed-top">
+        <ul class="navbar-nav text-light" id="accordionSidebar">
+          <li class="nav-item"><a class="nav-link" href="/"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+          <li class="nav-item"><a class="nav-link active" href='/vehicles'><i class="fas fa-car"></i><span>Vehicles</span></a></li>
+          <li class="nav-item"><a class="nav-link" href='/Drivers'><i class="fas fa-user"></i><span>Drivers</span></a></li>
+          <li class="nav-item"><a class="nav-link" href='/adminTrips'><i class="fas fa-user"></i><span> Assign Trips</span></a></li>
+          <li class="nav-item"><a class="nav-link" href='/locations'><i class="fas fa-map"></i><span>Map</span></a></li>
+          <li class="nav-item"><a class="nav-link" href='/statistics'><i class="far fa-chart-bar" aria-hidden="true"></i><span>Statistics</span></a></li>
+          <li class="nav-item"><a class="nav-link" href='/login'><i class="far fa-user-circle"></i><span>Logout</span></a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="d-flex flex-column" id="content-wrapper">
+      <div id="content">
+        <nav class="navbar navbar-expand bg-white shadow mb-4 topbar static-top navbar-light">
+          <div class="container-fluid">
+            <button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button">
+              <i class="fas fa-bars"></i>
+            </button>
+          </div>
+        </nav>
+
+        <div class="container-fluid">
+          <div class="d-sm-flex justify-content-between align-items-center mb-3">
+            <h3 class="text-dark"><strong> Vehicles </strong></h3>
+            <a id="generateReportBtn" class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button"
+              href="/addvehical">
+              <i class="fa fa-plus-circle fa-sm text-white-50"></i>&nbsp;Add New Vehicle
+            </a>
+          </div>
+
+          <div class="row mr-2" style="display:flex; height: 510px;">
+            <% if (vehicles.length> 0) { %>
+              <div class="table-responsive table" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
+                <table class="table" id="dataTable">
+                  <thead>
+                    <tr>
+                      <th>Image</th>
+                      <th>Type</th>
+                      <th>Model</th>
+                      <th>Year</th>
+                      <th>Registered Number</th>
+                      <th>Fuel Capacity (Liter)</th>
+                      <th>Km per liter</th>
+                      <th>Fuel Type</th>
+                      <th>Operations</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% vehicles.forEach(vehicle=> { %>
+                      <tr>
+                        <td>
+                          <img src="<%= vehicle.imageUrl %>" alt="Vehicle Image"
+                            style="max-width: 60px; max-height: 60px;">
+                        </td>
+                        <td>
+                          <%= vehicle.make %>
+                        </td>
+                        <td>
+                          <%= vehicle.model %>
+                        </td>
+                        <td>
+                          <%= vehicle.year %>
+                        </td>
+                        <td>
+                          <%= vehicle.registeredNumber %>
+                        </td>
+                        <td>
+                          <%= vehicle.fuelCapacity %>
+                        </td>
+                        <td>
+                          <%= vehicle.dpkm %>
+                        </td>
+                        <td>
+                          <%= vehicle.fuelType %>
+                        </td>
+                        <td>
+                          <div class="d-flex align-items-center">
+                            <a class="btn btn-primary me-2" href="/update/<%= vehicle.id %>">Edit</a>
+                            <a class="btn btn-success text-white me-2"
+                              href='/vehicles/<%= vehicle.id %>/refillingDetails'>Details</a>
+                            <form style="display: inline;" action="/delete/<%= vehicle.id %>?_method=DELETE"
+                              method="POST" class="delete-form">
+                              <button style="cursor: pointer;" type="submit" class="btn btn-danger">Remove</button>
+                            </form>
+                          </div>
+                        </td>
+                      </tr>
+                      <% }); %>
+                  </tbody>
+                </table>
+              </div>
+              <% } else { %>
+                <p>No vehicle data found.</p>
+                <% } %>
+          </div>
+        </div>
+      </div>
+
+      <footer class="bg-white sticky-footer">
+        <div class="container my-auto">
+          <div class="text-center my-auto copyright">
+            <span>All Rights Reserved © Transportation Department WUSL</span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var deleteForms = document.querySelectorAll(".delete-form");
+      deleteForms.forEach(function (form) {
+        form.addEventListener("submit", function (event) {
+          var confirmDelete = confirm("Are you sure you want to remove this vehicle?");
+          if (!confirmDelete) {
+            event.preventDefault();
+          }
+        });
+      });
+    });
+  </script>
+  <script>
+    $(document).ready(function () {
+      $('#dataTable').DataTable({
+        "paging": true,
+        "searching": true,
+        "ordering": true,
+        "info": true
+      });
+    });
+  </script>
+
+</body>
+
+</html>

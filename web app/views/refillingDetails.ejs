@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="/table.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/table.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../assets_DB/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
+  <link rel="stylesheet" href="../assets_DB/fonts/fontawesome-all.min.css">
+  <script src="../js/jquery.min.js"></script>
+  <script src="../js/jquery.dataTables.min.js"></script>
+  <script src="../js/dataTables.bootstrap4.min.js"></script>
+
+
+
+  <title>Refilling details</title>
+  <link rel="icon" href="/upload/Title_Logo.png" type="image/png">
+</head>
+
+<body>
+
+            <%- include('common/header3') %>
+            <% if (refillingDetails.length> 0) {
+              // Sort refillingDetails by date
+              refillingDetails.sort((a, b) => a.date.toMillis() - b.date.toMillis());
+              %>
+              <div class="container-fluid">
+                <div class="card shadow">
+                  <div class="table-responsive table mt-2" id="dataTable-1" role="grid"
+                    aria-describedby="dataTable_info">
+                    <table class="table my-0 display" id="dataTable">
+                      <thead>
+                        <tr>
+                          <th>Refill Date</th>
+                          <th>Amount (L)</th>
+                          <th>Cost (RS)</th>
+                          <th>Driver Name</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% refillingDetails.forEach(detail=> { %>
+                          <tr role="row" class="even">
+                            <td>
+                              <%= new Date(detail.date.toMillis()).toLocaleDateString() %>
+                            </td>
+                            <td>
+                              <%= detail.liters %>
+                            </td>
+                            <td>
+                              <%= detail.totalCost %>
+                            </td>
+                            <td>
+                              <%= detail.username %>
+                            </td>
+                          </tr>
+                          <% }); %>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Month selection dropdown -->
+              <div class="container-fluid mt-4">
+                <div class="card shadow">
+                  <div class="card-body">
+                    <h3 class="card-title">Daily Refilling</h3>
+                    <div class="mb-3">
+                      <label for="monthSelect" class="form-label">Select Month</label>
+                      <select id="monthSelect" class="form-select">
+                        <option value="">All</option>
+                        <% const months=Array.from(new Set(refillingDetails.map(detail=> new
+                          Date(detail.date.toMillis()).toLocaleString('default', { month: 'long', year: 'numeric' }))));
+                          %>
+                          <% months.forEach(month=> { %>
+                            <option value="<%= month %>">
+                              <%= month %>
+                            </option>
+                            <% }); %>
+                      </select>
+                    </div>
+                    <canvas id="dailyRefillingChart"></canvas>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Add data attributes to store refilling details for the chart -->
+              <div id="chartData"
+                data-dates="<%= refillingDetails.map(detail => new Date(detail.date.toMillis()).toLocaleDateString()).join(',') %>"
+                data-liters="<%= refillingDetails.map(detail => detail.liters).join(',') %>">
+              </div>
+
+              <footer class="bg-white sticky-footer">
+                <div class="container my-auto">
+                  <div class="text-center my-auto copyright">
+                    <span>Copyright © Waya Vehicle</span>
+                  </div>
+                </div>
+              </footer>
+
+              <a class="border rounded d-inline scroll-to-top" href="#page-top">
+                <i class="fas fa-angle-up"></i>
+              </a>
+              <% } else { %>
+                <p>No refilling data yet.</p>
+                <% } %>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="js/employee.js"></script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        // Initialize DataTables
+        $('#dataTable').DataTable({
+          "pageLength": 5,
+          "lengthMenu": [5, 10, 20, 50, 100, "All"],
+          "language": {
+            "info": "Showing _START_ to _END_ of _TOTAL_ entries"
+          }
+        });
+
+        // Chart logic
+        const chartDataElement = document.getElementById('chartData');
+        if (chartDataElement) {
+          const dates = chartDataElement.getAttribute('data-dates').split(',');
+          const liters = chartDataElement.getAttribute('data-liters').split(',').map(Number);
+
+          const ctx = document.getElementById('dailyRefillingChart').getContext('2d');
+          let chart;
+
+          function updateChart(filteredDates, filteredLiters) {
+            if (chart) {
+              chart.destroy();
+            }
+
+            chart = new Chart(ctx, {
+              type: 'line',
+              data: {
+                labels: filteredDates,
+                datasets: [{
+                  label: 'Daily Refilling',
+                  data: filteredLiters,
+                  backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                  borderColor: 'rgba(0, 123, 255, 1)',
+                  borderWidth: 1
+                }]
+              },
+              options: {
+                scales: {
+                  x: {
+                    title: {
+                      display: true,
+                      text: 'Date'
+                    }
+                  },
+                  y: {
+                    title: {
+                      display: true,
+                      text: 'Daily Liters'
+                    }
+                  }
+                }
+              }
+            });
+          }
+
+          function filterDataByMonth(month) {
+            if (!month) {
+              updateChart(dates, liters);
+              return;
+            }
+
+            const filteredDates = [];
+            const filteredLiters = [];
+
+            dates.forEach((date, index) => {
+              const dateObj = new Date(date);
+              const monthYear = dateObj.toLocaleString('default', { month: 'long', year: 'numeric' });
+              if (monthYear === month) {
+                filteredDates.push(date);
+                filteredLiters.push(liters[index]);
+              }
+            });
+
+            updateChart(filteredDates, filteredLiters);
+          }
+
+          document.getElementById('monthSelect').addEventListener('change', function () {
+            const selectedMonth = this.value;
+            filterDataByMonth(selectedMonth);
+          });
+
+          updateChart(dates, liters);
+        }
+      });
+    </script>
+</body>
+
+</html>

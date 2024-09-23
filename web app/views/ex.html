@@ -1,0 +1,487 @@
+<div class="containerMap">
+    <nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark">
+        <div class="container-fluid d-flex flex-column p-0">
+            <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+                <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-car"></i></div>
+                <div class="sidebar-brand-text mx-3"><span>WUSL</span></div>
+            </a>
+            <hr class="sidebar-divider my-0 fixed-top">
+            <ul class="navbar-nav text-light" id="accordionSidebar">
+                <li class="nav-item"><a class="nav-link" href="/"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                <li class="nav-item"><a class="nav-link" href='/vehicles'><i class="fas fa-car"></i><span>Vehicles</span></a></li>
+                <li class="nav-item"><a class="nav-link" href='/Drivers'><i class="fas fa-user"></i><span>Drivers</span></a></li>
+                <li class="nav-item"><a class="nav-link active" href='/locations'><i class="fas fa-map"></i><span>Map</span></a></li>
+                <li class="nav-item"><a class="nav-link" href='/login'><i class="far fa-user-circle"></i><span>Logout</span></a></li>
+            </ul>
+            <!--<div class="text-center d-none d-md-inline">
+                <button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button>
+            </div>-->
+        </div>
+    </nav>
+    
+    <main>
+        <nav class="navbar navbar-expand bg-white shadow mb-1 topbar static-top navbar-light">
+
+        </nav>
+        <div class="d-sm-flex justify-content-between align-items-center mb-4 mt-4 container-fluid">
+            <h3 class="text-dark mb-0">Dashboard</h3><a id="generateReportBtn" class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generate Report</a>
+        </div>
+        
+        <div id="map"></div>
+    </main>
+</div>
+
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+<%- include('common/header')%>
+  <% if (vehicles.length > 0) { %>
+
+    <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info" style="padding-left:20px; padding-right:20px;">
+      <table class="table my-0" id="dataTable">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Type</th>
+            <th>Model</th>
+            <th>Year</th>
+            <th>Registered Number</th>
+            <th>Fuel Capacity (per liter)</th>
+            <td>dpkm</td>
+            <th>Fuel Type</th>
+            <th>Operations</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% vehicles.forEach(vehicle => { %>
+            <tr>
+      
+              <td>
+                <img src="<%= vehicle.imageUrl %>" alt="Vehicle Image" style="max-width: 100px; max-height: 100px;">
+              </td>
+              <td><%= vehicle.make %></td>
+              <td><%= vehicle.model %></td>
+              <td><%= vehicle.year %></td>
+              <td><%= vehicle.registeredNumber %></td>
+              <td><%= vehicle.fuelCapacity %></td>
+              <td><%= vehicle.dpkm %></td>
+              <td><%= vehicle.fuelType %></td>
+              <td>
+                <div class="btn-group" role="group" aria-label="Operations">
+                  <a class="btn btn-primary me-2" href="/update/<%= vehicle.id %>">Edit</a>
+                  <a class="btn btn-success" href='/vehicles/<%= vehicle.id %>/refillingDetails'>Details</a>
+
+                  
+                  <form style="display: inline;" action="/delete/<%= vehicle.id %>?_method=DELETE" method="POST">
+                    <button style="cursor: pointer;" type="submit" class="btn btn-danger ml-2">Remove</button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  <% } else { %>
+    <p>No vehicle data found.</p>
+  <% } %>
+
+
+
+  ------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+  <%- include('common/header2')%>
+
+  <% if (drivers.length > 0) { %>
+    <div class="container-fluid">
+<nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark ">
+            <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+                    <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-car"></i></div>
+        
+                    <div class="sidebar-brand-text mx-3"><span>WUSL</span></div>
+                </a>
+                <hr class="sidebar-divider my-0 fixed-top">
+                <ul class="navbar-nav text-light" id="accordionSidebar">
+                    <li class="nav-item"><a class="nav-link active" href="/"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href='/vehicles'><i class="fas fa-car"></i><span>Vehicles</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href='/Drivers'><i class="fas fa-user"></i><span> Drivers</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href='/locations'><i class="fas fa-map"></i><span>Map</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href='/login'><i class="far fa-user-circle"></i><span>Logout</span></a></li>
+                    
+                </ul>
+                
+            </div>
+      <div class="card shadow">
+          
+          
+              </div>
+              <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
+                  <table class="table my-0" id="dataTable">
+                      <thead>
+                          <tr>
+                            <th>Driver Image</th>
+                            <th>User Name</th>
+                            <th>Email</th>
+                            <th>NIC</th>
+                            <th>License no</th>
+                            <th>University ID</th>
+                            <th>Operations</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                        <% drivers.forEach(data => { %>
+                          <tr role="row" class="even">
+                            <td>
+                              <img src="<%= data.image_url %>" alt="Driver Image" style="max-width: 100px; max-height: 100px;">
+                            </td>
+                            <td><%= data.username %></td>
+                            <td><%= data.email %></td>
+                            <td><%= data.nic_number %></td>
+                            <td><%= data.license_id %></td>
+                            <td><%= data.university_id %></td>
+                            
+
+                            <td>
+                              <div class="btn-group" role="group" aria-label="Operations">
+                                <a class="btn btn-primary me-2" href="/map/<%= data.id %>">Location</a>
+          
+                                <a class="btn btn-success" href='/Driver/<%= data.id %>/refillingDetails'>Details</a>
+                
+                                <form style="display: inline;" action="/del/<%= data.id %>?_method=DELETE" method="POST">
+                                  <button style="cursor: pointer;" type="submit" class="btn btn-danger ml-2">Delete</button>
+                                </form>
+                              </div>
+                            </td>
+                         
+                            </tr>
+                            <% }); %>
+                      </tbody>
+                    
+                  </table>
+              </div>
+             
+          </div>
+      </div>
+  </div>
+</div>
+<footer class="bg-white sticky-footer">
+  <div class="container my-auto">
+      <div class="text-center my-auto copyright"><span>Copyright © Waya Drivers</span></div>
+  </div>
+</footer>
+</div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+</div>
+<% } else { %>
+<p>No data found for this drivers.</p>
+<% } %>
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+<h1>Edit Vehicle</h1>
+  <% if (error) { %>
+    <div class="error"><%= error %></div>
+  <% } %>
+  <form action="/update/<%= vehicleId %>" method="post" enctype="multipart/form-data">
+    <label for="make">Make:</label>
+    <input type="text" id="make" name="make" value="<%= vehicle.make %>">
+    
+    <label for="model">Model:</label>
+    <input type="text" id="model" name="model" value="<%= vehicle.model %>">
+    
+    <label for="year">Year:</label>
+    <input type="text" id="year" name="year" value="<%= vehicle.year %>">
+    
+    <label for="registeredNumber">Registered Number:</label>
+    <input type="text" id="registeredNumber" name="registeredNumber" value="<%= vehicle.registeredNumber %>">
+    
+    <label for="fuelCapacity">Fuel Capacity:</label>
+    <input type="text" id="fuelCapacity" name="fuelCapacity" value="<%= vehicle.fuelCapacity %>">
+    
+    <label for="fuelType">Fuel Type:</label>
+    <input type="text" id="fuelType" name="fuelType" value="<%= vehicle.fuelType %>">
+    
+    <label for="vehicalImage">Vehicle Image:</label>
+    <input type="file" name="vehicalImage" accept="image/*" >
+    
+    <button type="submit">Update Vehicle</button>
+  </form>
+
+
+
+  ------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+  <%- include('common/header3') %>
+
+  <% if (refillingDetails.length > 0) { 
+    // Sort refillingDetails by date
+    refillingDetails.sort((a, b) => a.date.toMillis() - b.date.toMillis());
+  %>
+    <div class="container-fluid">
+      <div class="card shadow">
+        <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
+          <table class="table my-0 display" id="dataTable">
+            <thead>
+              <tr>
+                <th>Refill Date</th>
+                <th>Amount (L)</th>
+                <th>Cost (RS)</th>
+                <th>Driver Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% refillingDetails.forEach(detail => { %>
+                <tr role="row" class="even">
+                  <td><%= new Date(detail.date.toMillis()).toLocaleDateString() %></td>
+                  <td><%= detail.liters %></td>
+                  <td><%= detail.totalCost %></td>
+                  <td><%= detail.username %></td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Month selection dropdown -->
+    <div class="container-fluid mt-4">
+      <div class="card shadow">
+        <div class="card-body">
+          <h3 class="card-title">Daily Refilling</h3>
+          <div class="mb-3">
+            <label for="monthSelect" class="form-label">Select Month</label>
+            <select id="monthSelect" class="form-select">
+              <option value="">All</option>
+              <% const months = Array.from(new Set(refillingDetails.map(detail => new Date(detail.date.toMillis()).toLocaleString('default', { month: 'long', year: 'numeric' })))); %>
+              <% months.forEach(month => { %>
+                <option value="<%= month %>"><%= month %></option>
+              <% }); %>
+            </select>
+          </div>
+          <canvas id="dailyRefillingChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add data attributes to store refilling details for the chart -->
+    <div id="chartData"
+      data-dates="<%= refillingDetails.map(detail => new Date(detail.date.toMillis()).toLocaleDateString()).join(',') %>"
+      data-liters="<%= refillingDetails.map(detail => detail.liters).join(',') %>">
+    </div>
+
+    <footer class="bg-white sticky-footer">
+      <div class="container my-auto">
+        <div class="text-center my-auto copyright">
+          <span>Copyright © Waya Vehicle</span>
+        </div>
+      </div>
+    </footer>
+
+    <a class="border rounded d-inline scroll-to-top" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
+  <% } else { %>
+    <p>No refilling data yet.</p>
+  <% } %>
+
+
+
+
+
+  ------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+  <div class="container">
+    <h2 class="mb-4">Add New User Credentials</h2>
+    <form action="/adduser" method="POST">
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="password" name="password" placeholder="Password" required>
+      <input type="password" name="cpassword" placeholder="Re Enter Password" required>
+      <button type="submit">Add User Credentials</button>
+    </form>
+  </div>
+
+
+
+
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      width: 50%;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      background-color: #f9f9f9;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    input, button {
+      margin-bottom: 15px;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      width: 100%;
+      box-sizing: border-box; /* Ensure padding doesn't affect width */
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    width: 50%;
+  }
+
+  h2 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  input[type="text"],
+  input[type="file"],
+  button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    color: #555;
+  }
+
+  input[type="text"]:focus,
+  input[type="file"]:focus,
+  button:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+
+  button {
+    display: block;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    background-color: #007bff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #0056b3;
+  }
+</style>
+
+
+
+
+
+<div class="container mt-5 w-50">
+  <h2 class="mb-4">Add New Vehicle</h2>
+  <form action="/addvehical" method="POST" enctype="multipart/form-data">
+    <input type="text" name="make" placeholder="Type" required>
+    <input type="text" name="model" placeholder="Model" required>
+    <input type="text" name="year" placeholder="Year" required>
+    <input type="text" name="registeredNumber" placeholder="Registered Number" required>
+    <input type="text" name="fuelCapacity" placeholder="Fuel Capacity" required>
+    <input type="text" name="fuelType" placeholder="Fuel Type" required>
+    <input type="file" name="vehicalImage" accept="image/*" required>
+    <button type="submit">Add Vehicle</button>
+  </form>
+
+  </form>
+</div>
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+<h1>Live location</h1>
+    
+<div id="googleMap" style="width:100%;height:400px;"></div>
+<div id="locationDetails"></div>

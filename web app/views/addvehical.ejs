@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+  <title>Add New Vehicle</title>
+  <link rel="icon" href="/upload/Title_Logo.png" type="image/png">
+
+  <link rel="stylesheet" href="/table.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../assets_DB/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
+  <link rel="stylesheet" href="../assets_DB/fonts/fontawesome-all.min.css">
+  <script src="../js/jquery.min.js"></script>
+  <script src="../js/jquery.dataTables.min.js"></script>
+  <script src="../js/dataTables.bootstrap4.min.js"></script>
+
+
+</head>
+
+<body>
+
+  </head>
+
+  <body>
+
+
+    <div id="wrapper">
+      <nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark ">
+        <div class="container-fluid d-flex flex-column p-0"><a
+            class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+            <div class="sidebar-brand-icon">
+              <img src="/upload/Side_Bar_Logo.png" alt="Sidebar Icon" width="30px" height="30px">
+            </div>
+
+            <div class="sidebar-brand-text mx-3"><span>WUSL</span></div>
+          </a>
+          <hr class="sidebar-divider my-0 fixed-top">
+          <ul class="navbar-nav text-light" id="accordionSidebar">
+            <li class="nav-item"><a class="nav-link" href="/"><i
+                  class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+            <li class="nav-item"><a class="nav-link active" href='/vehicles'><i
+                  class="fas fa-car"></i><span>Vehicles</span></a></li>
+            <li class="nav-item"><a class="nav-link " href='/Drivers'><i class="fas fa-user"></i><span>
+                  Drivers</span></a></li>
+            <li class="nav-item"><a class="nav-link" href='/adminTrips'><i class="fas fa-user"></i><span> Assign
+                  Trips</span></a></li>
+            <li class="nav-item"><a class="nav-link" href='/locations'><i class="fas fa-map"></i><span>Map</span></a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href='/statistics'><i class="far fa-chart-bar"
+              aria-hidden="true"></i><span>Statistics</span></a></li>
+            <li class="nav-item"><a class="nav-link" href='/login'><i
+                  class="far fa-user-circle"></i><span>Logout</span></a></li>
+
+          </ul>
+
+        </div>
+      </nav>
+      <div class="d-flex flex-column" id="content-wrapper">
+        <div id="content">
+          <nav class="navbar navbar-expand bg-white shadow mb-4 topbar static-top navbar-light">
+            <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3"
+                id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
+          </nav>
+          <div class="container-fluid">
+            <div class="d-sm-flex justify-content-between align-items-center mb-3">
+              <h3 class="text-dark "><strong> <a href="/vehicles" class="text-decoration-none">  Vehicles
+                    </a> | Add New Vehicle</strong></h3><a id="generateReportBtn"
+                class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="/vehicles"><i
+                  class="fa fa-ban fa-sm text-white-50"></i>&nbsp;Cancel Operation</a>
+            </div>
+
+            <div class="row mr-2" style="display:flex; height: 510px;">
+
+              <form action="/addvehical" method="POST" enctype="multipart/form-data" class="needs-validation"
+                novalidate>
+                <div class="mb-3 row">
+                  <label for="make" class="col-sm-2 col-form-label">Type</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control form-control-sm" id="make" name="make" placeholder="Type"
+                      required>
+                    <div class="invalid-feedback">Please enter the vehicle type.</div>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label for="model" class="col-sm-2 col-form-label">Model</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control form-control-sm" id="model" name="model" placeholder="Model"
+                      required>
+                    <div class="invalid-feedback">Please enter the model.</div>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label for="year" class="col-sm-2 col-form-label">Year</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control form-control-sm" id="year" name="year" placeholder="Year"
+                      required>
+                    <div class="invalid-feedback">Please enter the year.</div>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label for="registeredNumber" class="col-sm-2 col-form-label">Registered Number</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control form-control-sm" id="registeredNumber"
+                      name="registeredNumber" placeholder="Registered Number" required>
+                    <div class="invalid-feedback">Please enter the registered number.</div>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label for="fuelCapacity" class="col-sm-2 col-form-label">Fuel Capacity</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control form-control-sm" id="fuelCapacity" name="fuelCapacity"
+                      placeholder="Fuel Capacity" required>
+                    <div class="invalid-feedback">Please enter the fuel capacity.</div>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label for="dpkm" class="col-sm-2 col-form-label">Km per liter</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control form-control-sm" id="dpkm" name="dpkm"
+                      placeholder="Km per liter" required>
+                    <div class="invalid-feedback">Please enter the km per liter.</div>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label for="fuelType" class="col-sm-2 col-form-label">Fuel Type</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control form-control-sm" id="fuelType" name="fuelType"
+                      placeholder="Fuel Type" required>
+                    <div class="invalid-feedback">Please enter the fuel type.</div>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label for="vehicalImage" class="col-sm-2 col-form-label">Vehicle Image</label>
+                  <div class="col-sm-10">
+                    <input type="file" class="form-control form-control-sm" id="vehicalImage" name="vehicalImage"
+                      accept="image/*" required>
+                    <div class="invalid-feedback">Please upload a vehicle image.</div>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <div class="col-sm-10 offset-sm-2">
+                    <button type="submit" class="btn btn-primary btn-sm w-auto"><i class="fa fa-car"></i>&nbsp;&nbsp;Add
+                      Vehicle</button>
+                  </div>
+                </div>
+              </form>
+
+
+
+
+
+
+            </div>
+          </div>
+          <footer class="bg-white sticky-footer">
+            <div class="container my-auto">
+              <div class="text-center my-auto copyright"><span>All Rights Reserved © Transportation Department
+                  WUSL</span>
+              </div>
+            </div>
+          </footer>
+
+
+  </body>
+
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link rel="stylesheet" href="/table.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets_DB/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
+    <link rel="stylesheet" href="../assets_DB/fonts/fontawesome-all.min.css">
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/jquery.dataTables.min.js"></script>
+    <script src="../js/dataTables.bootstrap4.min.js"></script>
+
+
+    <title>Driver Live location </title>
+    <link rel="icon" href="/upload/Title_Logo.png" type="image/png">
+
+    <style>
+        #googleMap {
+            flex-grow: 1;
+            padding: 10px;
+            height: 100%;
+            /* Full height */
+            width: 1200px;
+            /* Full width */
+            margin-left: 5px;
+            margin-right: 10px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+        <nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark ">
+            <div class="container-fluid d-flex flex-column p-0"><a
+                    class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+                    <div class="sidebar-brand-icon">
+                        <img src="/upload/Side_Bar_Logo.png" alt="Sidebar Icon" width="30px" height="30px">
+                    </div>
+
+                    <div class="sidebar-brand-text mx-3"><span>WUSL</span></div>
+                </a>
+                <hr class="sidebar-divider my-0 fixed-top">
+                <ul class="navbar-nav text-light" id="accordionSidebar">
+                    <li class="nav-item"><a class="nav-link" href="/"><i
+                                class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href='/vehicles'><i class="fas fa-car"></i><span>Vehicles</span></a></li>
+                    <li class="nav-item"><a class="nav-link active" href='/Drivers'><i
+                                class="fas fa-user"></i><span>Work with
+                                Drivers</span></a></li>
+                                <li class="nav-item"><a class="nav-link" href='/adminTrips'><i class="fas fa-user"></i><span> Assign Trips</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href='/locations'><i class="fas fa-map"></i><span>Map</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href='/login'><i
+                                class="far fa-user-circle"></i><span>Logout</span></a></li>
+
+                </ul>
+
+            </div>
+        </nav>
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <nav class="navbar navbar-expand bg-white shadow mb-4 topbar static-top navbar-light">
+                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3"
+                            id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
+                </nav>
+                <div class="container-fluid">
+                    <div class="d-sm-flex justify-content-between align-items-center mb-3">
+                        <h3 class="text-dark "><a href="/Drivers" class="text-decoration-none"><strong>Work with Drivers
+                                    Subsystem</a> | Live Location</strong></h3>
+                                    <!-- <a id="generateReportBtn"
+                            class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="/adduser"><i
+                                class="fa fa-plus-circle fa-sm text-white-50"></i>&nbsp;All Drivers Location</a> -->
+                    </div>
+
+                    <div class="row p-3" style="display:flex; height: 510px;">
+
+                        <div id="googleMap" style="width:100%;height:450px;"></div>
+                        <div id="locationDetails" class="text-center mt-2"></div>
+
+                    </div>
+                   
+                </div>
+                <footer class="bg-white sticky-footer">
+                    <div class="container my-auto">
+                        <div class="text-center my-auto copyright"><span>All Rights Reserved © Transportation
+                                Department WUSL</span></div>
+                    </div>
+                </footer>
+
+            </div>
+
+
+
+
+
+
+            <script>
+                let map;
+                let marker;
+
+                function myMap(latitude, longitude) {
+                    const mapProp = {
+                        center: new google.maps.LatLng(latitude, longitude),
+                        zoom: 9,
+                    };
+                    map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+                    marker = new google.maps.Marker({
+                        position: mapProp.center,
+                        map: map,
+                        title: 'Current Location'
+                    });
+                }
+
+                const ws = new WebSocket('ws://localhost:200/map/<%= userId %>');
+
+                ws.onmessage = function (event) {
+                    const data = JSON.parse(event.data);
+                    document.getElementById('locationDetails').innerHTML = `Latitude: ${data.latitude}, Longitude: ${data.longitude}`;
+                    myMap(data.latitude, data.longitude); // Update map with new coordinates
+                };
+            </script>
+
+            <script
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCi0-3NtjgA2SLfbHQw5jDrmdcPPVMl10&callback=myMap"></script>
+</body>
+
+</html>

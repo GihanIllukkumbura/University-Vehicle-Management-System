@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>User Locations Map</title>
+    <link rel="icon" href="/upload/Title_Logo.png" type="image/png">
+    <style>
+        #map {
+            flex-grow: 1;
+            padding: 10px;
+            height: 100%;
+            /* Full height */
+            width: 1200px;
+            /* Full width */
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+
+        .no-active-trips-message {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+    </style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="../assets_DB/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
+    <link rel="stylesheet" href="../assets_DB/fonts/fontawesome-all.min.css">
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/jquery.dataTables.min.js"></script>
+    <script src="../js/dataTables.bootstrap4.min.js"></script>
+</head>
+
+<body>
+    <div id="wrapper">
+        <nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark">
+            <div class="container-fluid d-flex flex-column p-0">
+                <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+                    <div class="sidebar-brand-icon">
+                        <img src="/upload/Side_Bar_Logo.png" alt="Sidebar Icon" width="30px" height="30px">
+                    </div>
+                    <div class="sidebar-brand-text mx-3"><span>WUSL</span></div>
+                </a>
+                <hr class="sidebar-divider my-0 fixed-top">
+                <ul class="navbar-nav text-light" id="accordionSidebar">
+                    <li class="nav-item"><a class="nav-link" href="/"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href='/vehicles'><i class="fas fa-car"></i><span>Vehicles</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href='/Drivers'><i class="fas fa-user"></i><span>Drivers</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href='/adminTrips'><i class="fas fa-user"></i><span> Assign Trips</span></a></li>
+                    <li class="nav-item"><a class="nav-link active" href='/locations'><i class="fas fa-map"></i><span>Map</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href='/statistics'><i class="far fa-chart-bar"></i><span>Statistics</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href='/login'><i class="far fa-user-circle"></i><span>Logout</span></a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <nav class="navbar navbar-expand bg-white shadow mb-4 topbar static-top navbar-light">
+                    <div class="container-fluid">
+                        <button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
+                    </div>
+                </nav>
+
+                <div class="container-fluid">
+                    <div class="d-sm-flex justify-content-between align-items-center mb-3">
+                        <h3 class="text-dark mb-0"><strong>Live Location of Vehicles</strong></h3>
+                        <!-- <a id="generateReportBtn" class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#"><i class="fa fa-phone text-white-50"></i>&nbsp;Contact Drivers</a> -->
+                    </div>
+
+                    <div class="row p-2 mr-2 mb-2" style="display:flex; height: 510px;">
+                        <% if (locations.length > 0) { %>
+                            <div id="map"></div>
+                            <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+                            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+                            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+                            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+                            <script>
+                                var map = L.map('map').setView([7.8731, 80.7718], 7); // Set view to Sri Lanka (latitude, longitude) and zoom level 7
+                                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                }).addTo(map);
+
+                                var locations = [
+                                    <% locations.forEach(function (location) { %>
+                                    {
+                                        lat: <%= location.latitude %>,
+                                        lng: <%= location.longitude %>,
+                                        userid: '<%= location.userid %>',
+                                        username: '<%= location.username %>',
+                                        destinationAddress: '<%= location.destinationAddress %>',
+                                        distance: '<%= Math.round(location.distance) %> km',
+                                        userimage: '<%= location.userimage %>',
+                                        vehicleName: '<%= location.vehicleName %>',
+                                        startTime: '<%= new Date(location.startTime.toMillis()).toLocaleString()  %>',
+                                        startAddress: '<%= location.startAddress %>',
+                                    },
+                                    <% }); %>
+                                ];
+
+                                locations.forEach(function (location) {
+                                    var marker = L.marker([location.lat, location.lng]).addTo(map);
+                                    marker.bindPopup(`
+                                        <div class="card" style="width: 18rem;">
+                                            <div class="row no-gutters">
+                                                <div class="col-md-4">
+                                                    <img src="${location.userimage}" class="card-img" alt="User Image">
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">${location.username}</h5>
+                                                        <p class="card-text"><b>Start :</b> ${location.startAddress}</p>
+                                                        <p class="card-text"><b>Destination :</b> ${location.destinationAddress}</p>
+                                                        <p class="card-text"><b>Start Time :</b> ${location.startTime}</p>
+                                                        <p class="card-text"><b>Distance:</b> ${location.distance}</p>
+                                                        <p class="card-text"><b>Vehicle:</b> ${location.vehicleName}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `);
+                                });
+                            </script>
+                        <% } else { %>
+                            <div class="no-active-trips-message">
+                                <h2>No active trips found.</h2>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+
+                <footer class="bg-white sticky-footer">
+                    <div class="container my-auto">
+                        <div class="text-center my-auto copyright"><span>All Rights Reserved © Transportation Department WUSL</span></div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

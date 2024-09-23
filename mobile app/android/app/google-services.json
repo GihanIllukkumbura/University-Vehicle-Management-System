@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "204049094681",
+    "project_id": "wybvehicals",
+    "storage_bucket": "wybvehicals.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:204049094681:android:bf6b3ec69caef162bc3288",
+        "android_client_info": {
+          "package_name": "com.example.firebasefluttter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArDKkHbbMghmnCkdPwFNh8mx_Q9w4c370"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
